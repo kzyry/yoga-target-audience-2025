@@ -501,23 +501,9 @@
                 >
             </div>
             <div class="sort-buttons">
-                <button class="sort-btn" data-sort="author">По автору</button>
-                <button class="sort-btn" data-sort="views">По просмотрам</button>
-                <button class="sort-btn" data-sort="date">По дате</button>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span>📊 Всего записей:</span>
-                    <span class="stat-value" id="totalRecords">0</span>
-                </div>
-                <div class="stat-item">
-                    <span>👁 Отображено:</span>
-                    <span class="stat-value" id="displayedRecords">0</span>
-                </div>
-                <div class="stat-item">
-                    <span>📈 Сортировка:</span>
-                    <span class="stat-value" id="sortStatus">Нет</span>
-                </div>
+                <button class="sort-btn" data-sort="author">Автор</button>
+                <button class="sort-btn" data-sort="views">Просмотры</button>
+                <button class="sort-btn" data-sort="date">Дата</button>
             </div>
         </div>
 
@@ -569,18 +555,11 @@
                 document.getElementById('reelsTable').style.display = 'table';
                 document.getElementById('pagination').style.display = 'flex';
 
-                updateStats();
                 renderTable();
             } catch (error) {
                 document.getElementById('loadingMessage').innerHTML =
                     '❌ Ошибка загрузки данных: ' + error.message;
             }
-        }
-
-        // Update statistics
-        function updateStats() {
-            document.getElementById('totalRecords').textContent = reelsData.length;
-            document.getElementById('displayedRecords').textContent = filteredData.length;
         }
 
         // Format number with spaces
@@ -735,7 +714,6 @@
                        (item.caption && item.caption.toLowerCase().includes(term));
             });
 
-            updateStats();
             currentPage = 1;
             renderTable();
         }
