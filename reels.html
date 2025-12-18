@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="База Reels с просмотрами 50K+ за последние 180 дней">
+    <title>База Reels 50K+ | Karina Yoga</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #c084fc;
+            --secondary: #fb923c;
+            --accent: #fca5a5;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #1e293b;
+            --lighter: #334155;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --success: #86efac;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c084fc 0%, #fb923c 100%);
+            padding: 2rem;
+            border-bottom: 2px solid var(--lighter);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .back-btn:hover {
+            opacity: 1;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .controls {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--lighter);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1rem;
+            background: var(--light);
+            border: 1px solid var(--lighter);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .table-container {
+            background: var(--dark);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--lighter);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--light);
+            position: sticky;
+            top: 120px;
+            z-index: 10;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 2px solid var(--lighter);
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        th:hover {
+            background: var(--lighter);
+        }
+
+        th.sortable::after {
+            content: ' ⇅';
+            opacity: 0.3;
+            font-size: 0.8rem;
+        }
+
+        th.sorted-asc::after {
+            content: ' ↑';
+            opacity: 1;
+            color: var(--success);
+        }
+
+        th.sorted-desc::after {
+            content: ' ↓';
+            opacity: 1;
+            color: var(--success);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--lighter);
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background: var(--light);
+        }
+
+        .author-cell {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .url-cell a {
+            color: var(--secondary);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .url-cell a:hover {
+            text-decoration: underline;
+        }
+
+        .views-cell {
+            font-weight: 600;
+            color: var(--success);
+            white-space: nowrap;
+        }
+
+        .date-cell {
+            color: var(--text-dim);
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        .caption-cell {
+            max-width: 400px;
+            line-height: 1.5;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .no-results {
+            padding: 3rem;
+            text-align: center;
+            color: var(--text-dim);
+        }
+
+        .loading {
+            padding: 3rem;
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            background: var(--light);
+            border: 1px solid var(--lighter);
+            border-radius: 6px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .page-info {
+            color: var(--text-dim);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+
+            .caption-cell {
+                max-width: 200px;
+            }
+
+            thead {
+                top: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">← Главная</a>
+        <h1>🎬 База Reels 50K+ за 180 дней</h1>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="🔍 Поиск по автору, описанию..."
+                >
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span>📊 Всего записей:</span>
+                    <span class="stat-value" id="totalRecords">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>👁 Отображено:</span>
+                    <span class="stat-value" id="displayedRecords">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>📈 Сортировка:</span>
+                    <span class="stat-value" id="sortStatus">Нет</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="loading" id="loadingMessage">Загрузка данных...</div>
+            <table id="reelsTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-column="author">Автор</th>
+                        <th>URL</th>
+                        <th class="sortable" data-column="views">Просмотры</th>
+                        <th class="sortable" data-column="date">Дата</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+            <div class="no-results" id="noResults" style="display: none;">
+                Ничего не найдено
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination" style="display: none;">
+            <button class="page-btn" id="prevBtn">← Назад</button>
+            <span class="page-info" id="pageInfo">Страница 1 из 1</span>
+            <button class="page-btn" id="nextBtn">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        let reelsData = [];
+        let filteredData = [];
+        let currentSort = { column: null, direction: 'asc' };
+        let currentPage = 1;
+        const itemsPerPage = 50;
+
+        // Load JSON data
+        async function loadData() {
+            try {
+                const response = await fetch('../../reels_from_followings/filtered_50k_views.json');
+                reelsData = await response.json();
+                filteredData = [...reelsData];
+
+                document.getElementById('loadingMessage').style.display = 'none';
+                document.getElementById('reelsTable').style.display = 'table';
+                document.getElementById('pagination').style.display = 'flex';
+
+                updateStats();
+                renderTable();
+            } catch (error) {
+                document.getElementById('loadingMessage').innerHTML =
+                    '❌ Ошибка загрузки данных: ' + error.message;
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalRecords').textContent = reelsData.length;
+            document.getElementById('displayedRecords').textContent = filteredData.length;
+        }
+
+        // Format number with spaces
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        // Render table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            if (pageData.length === 0) {
+                document.getElementById('reelsTable').style.display = 'none';
+                document.getElementById('noResults').style.display = 'block';
+                document.getElementById('pagination').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('reelsTable').style.display = 'table';
+            document.getElementById('noResults').style.display = 'none';
+            document.getElementById('pagination').style.display = 'flex';
+
+            tbody.innerHTML = pageData.map(item => `
+                <tr>
+                    <td class="author-cell">${item.author}</td>
+                    <td class="url-cell">
+                        <a href="${item.url}" target="_blank">Открыть ↗</a>
+                    </td>
+                    <td class="views-cell">${formatNumber(item.views)}</td>
+                    <td class="date-cell">${formatDate(item.date)}</td>
+                    <td class="caption-cell">${item.caption || ''}</td>
+                </tr>
+            `).join('');
+
+            updatePagination();
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            document.getElementById('pageInfo').textContent =
+                `Страница ${currentPage} из ${totalPages}`;
+
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+        }
+
+        // Sort table
+        function sortTable(column) {
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.direction = 'asc';
+            }
+
+            filteredData.sort((a, b) => {
+                let aVal, bVal;
+
+                if (column === 'author') {
+                    aVal = a.author.toLowerCase();
+                    bVal = b.author.toLowerCase();
+                } else if (column === 'views') {
+                    aVal = a.views;
+                    bVal = b.views;
+                } else if (column === 'date') {
+                    aVal = new Date(a.date);
+                    bVal = new Date(b.date);
+                }
+
+                if (currentSort.direction === 'asc') {
+                    return aVal > bVal ? 1 : -1;
+                } else {
+                    return aVal < bVal ? 1 : -1;
+                }
+            });
+
+            // Update sort indicators
+            document.querySelectorAll('th.sortable').forEach(th => {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+                if (th.dataset.column === column) {
+                    th.classList.add(currentSort.direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+                }
+            });
+
+            const sortLabels = {
+                author: 'Автор',
+                views: 'Просмотры',
+                date: 'Дата'
+            };
+            document.getElementById('sortStatus').textContent =
+                `${sortLabels[column]} ${currentSort.direction === 'asc' ? '↑' : '↓'}`;
+
+            currentPage = 1;
+            renderTable();
+        }
+
+        // Search/filter
+        function filterData(searchTerm) {
+            const term = searchTerm.toLowerCase();
+
+            filteredData = reelsData.filter(item => {
+                return item.author.toLowerCase().includes(term) ||
+                       (item.caption && item.caption.toLowerCase().includes(term));
+            });
+
+            updateStats();
+            currentPage = 1;
+            renderTable();
+        }
+
+        // Event listeners
+        document.querySelectorAll('th.sortable').forEach(th => {
+            th.addEventListener('click', () => sortTable(th.dataset.column));
+        });
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            filterData(e.target.value);
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
