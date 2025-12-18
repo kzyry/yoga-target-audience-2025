@@ -698,14 +698,6 @@
                 }
             });
 
-            const sortLabels = {
-                author: 'Автор',
-                views: 'Просмотры',
-                date: 'Дата'
-            };
-            document.getElementById('sortStatus').textContent =
-                `${sortLabels[column]} ${currentSort.direction === 'asc' ? '↑' : '↓'}`;
-
             currentPage = 1;
             renderTable();
         }
