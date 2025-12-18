@@ -272,7 +272,7 @@
 
         .author-cell {
             font-weight: 600;
-            color: var(--primary);
+            color: #F8FAFC;
             width: 200px;
             min-width: 200px;
             max-width: 200px;
@@ -293,9 +293,19 @@
 
         .views-cell {
             font-weight: 600;
-            color: var(--success);
+            color: #F8FAFC;
             white-space: nowrap;
             font-family: 'Space Mono', 'Monaco', monospace;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .views-cell.high-views {
+            background: linear-gradient(to left, rgba(0, 156, 18, 0.15), rgba(0, 156, 18, 0));
+        }
+
+        .views-cell.medium-views {
+            background: linear-gradient(to left, rgba(185, 125, 0, 0.15), rgba(185, 125, 0, 0));
         }
 
         .date-cell {
@@ -409,7 +419,7 @@
 
         .reel-author {
             font-weight: 400;
-            color: var(--primary);
+            color: #F8FAFC;
             font-size: 0.95rem;
             word-break: break-word;
         }
@@ -422,10 +432,20 @@
 
         .reel-views {
             font-weight: 600;
-            color: var(--success);
+            color: #F8FAFC;
             white-space: nowrap;
             font-size: 0.9rem;
             font-family: 'Space Mono', 'Monaco', monospace;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .reel-views.high-views {
+            background: linear-gradient(to left, rgba(0, 156, 18, 0.15), rgba(0, 156, 18, 0));
+        }
+
+        .reel-views.medium-views {
+            background: linear-gradient(to left, rgba(185, 125, 0, 0.15), rgba(185, 125, 0, 0));
         }
 
         .reel-tags {
@@ -662,6 +682,15 @@
                 const tagsHtml = item.tags && item.tags.length > 0
                     ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')
                     : '<span class="no-tags">—</span>';
+
+                // Determine views class based on value
+                let viewsClass = 'views-cell';
+                if (item.views > 200000) {
+                    viewsClass += ' high-views';
+                } else if (item.views >= 100000) {
+                    viewsClass += ' medium-views';
+                }
+
                 return `
                 <tr>
                     <td class="num-cell">${globalIndex}</td>
@@ -669,7 +698,7 @@
                     <td class="url-cell">
                         <a href="${item.url}" target="_blank">Открыть ↗</a>
                     </td>
-                    <td class="views-cell">${formatNumber(item.views)}</td>
+                    <td class="${viewsClass}">${formatNumber(item.views)}</td>
                     <td class="date-cell">${formatDate(item.date)}</td>
                     <td class="tags-cell">${tagsHtml}</td>
                 </tr>
@@ -682,11 +711,20 @@
                 const tagsHtml = item.tags && item.tags.length > 0
                     ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')
                     : '<span class="no-tags">—</span>';
+
+                // Determine views class based on value
+                let viewsClass = 'reel-views';
+                if (item.views > 200000) {
+                    viewsClass += ' high-views';
+                } else if (item.views >= 100000) {
+                    viewsClass += ' medium-views';
+                }
+
                 return `
                 <div class="reel-card">
                     <div class="reel-card-header">
                         <div class="reel-author"><span class="reel-num">${globalIndex}</span> ${item.author}</div>
-                        <div class="reel-views">${formatNumber(item.views)}</div>
+                        <div class="${viewsClass}">${formatNumber(item.views)}</div>
                     </div>
                     <div class="reel-tags">${tagsHtml}</div>
                     <div class="reel-meta">
