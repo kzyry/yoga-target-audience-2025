@@ -157,8 +157,12 @@
         .table-container {
             background: var(--dark);
             border-radius: 12px;
-            overflow-x: auto;
             border: 1px solid var(--lighter);
+            overflow: visible;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
         }
 
         table {
@@ -534,20 +538,22 @@
 
         <div class="table-container">
             <div class="loading" id="loadingMessage">Загрузка данных...</div>
-            <table id="reelsTable" style="display: none;">
-                <thead>
-                    <tr>
-                        <th class="num-col">№</th>
-                        <th class="sortable author-col" data-column="author">Автор</th>
-                        <th>URL</th>
-                        <th class="sortable" data-column="views">Просмотры</th>
-                        <th class="sortable" data-column="date">Дата</th>
-                        <th>Описание</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table id="reelsTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th class="num-col">№</th>
+                            <th class="sortable author-col" data-column="author">Автор</th>
+                            <th>URL</th>
+                            <th class="sortable" data-column="views">Просмотры</th>
+                            <th class="sortable" data-column="date">Дата</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
             <div class="mobile-cards" id="mobileCards">
             </div>
             <div class="no-results" id="noResults" style="display: none;">
