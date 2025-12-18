@@ -700,18 +700,32 @@
                 if (column === 'author') {
                     aVal = a.author.toLowerCase();
                     bVal = b.author.toLowerCase();
+
+                    if (currentSort.direction === 'asc') {
+                        return aVal > bVal ? 1 : -1;
+                    } else {
+                        return aVal < bVal ? 1 : -1;
+                    }
                 } else if (column === 'views') {
                     aVal = a.views;
                     bVal = b.views;
-                } else if (column === 'date') {
-                    aVal = new Date(a.date);
-                    bVal = new Date(b.date);
-                }
 
-                if (currentSort.direction === 'asc') {
-                    return aVal > bVal ? 1 : -1;
-                } else {
-                    return aVal < bVal ? 1 : -1;
+                    if (currentSort.direction === 'asc') {
+                        return aVal - bVal;
+                    } else {
+                        return bVal - aVal;
+                    }
+                } else if (column === 'date') {
+                    aVal = new Date(a.date).getTime();
+                    bVal = new Date(b.date).getTime();
+
+                    if (currentSort.direction === 'asc') {
+                        // asc = от старых к новым (меньший timestamp первый)
+                        return aVal - bVal;
+                    } else {
+                        // desc = от новых к старым (больший timestamp первый)
+                        return bVal - aVal;
+                    }
                 }
             });
 
