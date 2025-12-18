@@ -366,7 +366,7 @@
         // Load JSON data
         async function loadData() {
             try {
-                const response = await fetch('../../reels_from_followings/filtered_50k_views.json');
+                const response = await fetch('filtered_50k_views.json');
                 reelsData = await response.json();
                 filteredData = [...reelsData];
 
