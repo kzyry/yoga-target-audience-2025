@@ -41,34 +41,44 @@
         }
 
         .header {
-            background: var(--bg-card);
+            background: #0C0C0C;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #303030;
             position: relative;
         }
 
-        .back-btn {
-            position: absolute;
-            left: 1rem;
-            color: white;
+        .header-inner {
+            max-width: 1400px;
+            width: 100%;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #5e5e5e;
             text-decoration: none;
-            font-size: 0.9rem;
-            opacity: 0.9;
-            transition: opacity 0.2s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            white-space: nowrap;
         }
 
-        .back-btn:hover {
-            opacity: 1;
+        .nav-link:hover {
+            color: #F8FAFC;
         }
 
-        .header h1 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin: 0;
-            color: white;
+        .nav-link.active {
+            color: #F8FAFC;
         }
 
         .container {
@@ -78,11 +88,7 @@
         }
 
         .controls {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border);
+            display: none;
         }
 
         .search-box {
@@ -161,15 +167,96 @@
             font-weight: 600;
         }
 
-        .table-container {
-            background: var(--bg-card);
+        .table-section {
+            background: #141414;
             border-radius: 16px;
-            border: 1px solid var(--border);
-            overflow: visible;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .table-section {
+                padding: 16px;
+            }
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+        }
+
+        .table-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #F8FAFC;
+        }
+
+        .tag-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-tag {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            border: 1px solid;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.5;
+        }
+
+        .filter-tag:hover {
+            opacity: 0.8;
+        }
+
+        .filter-tag.active {
+            opacity: 1;
+        }
+
+        .sort-tag {
+            background: var(--bg-main);
+            border-color: var(--border);
+            color: #5e5e5e;
+        }
+
+        .sort-tag.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        @media (min-width: 769px) {
+            .sort-tag {
+                display: none;
+            }
+        }
+
+        .table-container {
+            background: #141414;
+            border-radius: 12px;
+            border: 1px solid #252525;
+            overflow: hidden;
         }
 
         .table-wrapper {
             overflow-x: auto;
+            border-radius: 12px;
         }
 
         table {
@@ -179,6 +266,7 @@
             min-width: 800px;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 15px;
+            background: #191919;
         }
 
         thead {
@@ -188,28 +276,33 @@
         }
 
         thead tr {
-            background: var(--bg-card);
+            background: #191919;
         }
 
         th {
-            padding: 1rem;
+            padding: 12px 16px;
             text-align: left;
-            font-weight: 600;
-            color: var(--primary);
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 13px;
+            color: #5E5E5E;
+            border-bottom: 1px solid #252525;
             user-select: none;
             position: sticky;
             top: 0;
-            background: var(--bg-card);
+            background: #191919;
             z-index: 10;
         }
 
+        th.sortable {
+            cursor: pointer;
+        }
+
         th.num-col {
-            width: 60px;
-            min-width: 60px;
-            max-width: 60px;
-            text-align: center;
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+            text-align: left;
             cursor: default;
         }
 
@@ -218,67 +311,110 @@
         }
 
         th.author-col {
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
+            width: auto;
         }
 
-        th:hover {
-            background: var(--lighter);
+        th.views-col,
+        th.date-col,
+        th.tags-col {
+            text-align: right;
+            width: 250px;
+            min-width: 250px;
+            max-width: 250px;
+        }
+
+        th.tags-col {
+            padding-right: 16px;
         }
 
         td.num-cell {
-            text-align: center;
+            text-align: left;
             color: var(--text-dim);
             font-weight: 600;
             font-size: 0.9rem;
-            width: 60px;
+            width: 100px;
             font-family: 'Space Mono', 'Monaco', monospace;
         }
 
         th.sortable::after {
-            content: ' ⇅';
-            opacity: 0.3;
-            font-size: 0.8rem;
+            display: none;
         }
 
-        th.sorted-asc::after {
-            content: ' ↑';
-            opacity: 1;
-            color: var(--success);
+        /* Arrow on right for Author column */
+        th.author-col.sorted-asc::after,
+        th.author-col.sorted-desc::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 11px;
+            margin-left: 4px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
-        th.sorted-desc::after {
-            content: ' ↓';
-            opacity: 1;
-            color: var(--success);
+        th.author-col.sorted-asc::after {
+            background-image: url('data:image/svg+xml;utf8,<svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.18164 0.5C4.18164 0.223858 3.95778 0 3.68164 0C3.4055 0 3.18164 0.223858 3.18164 0.5H3.68164L4.18164 0.5ZM3.32809 10.8536C3.52335 11.0488 3.83993 11.0488 4.03519 10.8536L7.21717 7.67157C7.41244 7.47631 7.41244 7.15973 7.21717 6.96447C7.02191 6.7692 6.70533 6.7692 6.51007 6.96447L3.68164 9.79289L0.853214 6.96447C0.657951 6.7692 0.341369 6.7692 0.146107 6.96447C-0.0491554 7.15973 -0.0491554 7.47631 0.146107 7.67157L3.32809 10.8536ZM3.68164 0.5H3.18164L3.18164 10.5H3.68164H4.18164L4.18164 0.5L3.68164 0.5Z" fill="%23F8FAFC"/></svg>');
+            transform: rotate(180deg);
+        }
+
+        th.author-col.sorted-desc::after {
+            background-image: url('data:image/svg+xml;utf8,<svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.18164 0.5C4.18164 0.223858 3.95778 0 3.68164 0C3.4055 0 3.18164 0.223858 3.18164 0.5H3.68164L4.18164 0.5ZM3.32809 10.8536C3.52335 11.0488 3.83993 11.0488 4.03519 10.8536L7.21717 7.67157C7.41244 7.47631 7.41244 7.15973 7.21717 6.96447C7.02191 6.7692 6.70533 6.7692 6.51007 6.96447L3.68164 9.79289L0.853214 6.96447C0.657951 6.7692 0.341369 6.7692 0.146107 6.96447C-0.0491554 7.15973 -0.0491554 7.47631 0.146107 7.67157L3.32809 10.8536ZM3.68164 0.5H3.18164L3.18164 10.5H3.68164H4.18164L4.18164 0.5L3.68164 0.5Z" fill="%23F8FAFC"/></svg>');
+        }
+
+        /* Arrow on left for Views and Date columns */
+        th.views-col.sorted-asc::before,
+        th.views-col.sorted-desc::before,
+        th.date-col.sorted-asc::before,
+        th.date-col.sorted-desc::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 11px;
+            margin-right: 4px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        th.views-col.sorted-asc::before,
+        th.date-col.sorted-asc::before {
+            background-image: url('data:image/svg+xml;utf8,<svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.18164 0.5C4.18164 0.223858 3.95778 0 3.68164 0C3.4055 0 3.18164 0.223858 3.18164 0.5H3.68164L4.18164 0.5ZM3.32809 10.8536C3.52335 11.0488 3.83993 11.0488 4.03519 10.8536L7.21717 7.67157C7.41244 7.47631 7.41244 7.15973 7.21717 6.96447C7.02191 6.7692 6.70533 6.7692 6.51007 6.96447L3.68164 9.79289L0.853214 6.96447C0.657951 6.7692 0.341369 6.7692 0.146107 6.96447C-0.0491554 7.15973 -0.0491554 7.47631 0.146107 7.67157L3.32809 10.8536ZM3.68164 0.5H3.18164L3.18164 10.5H3.68164H4.18164L4.18164 0.5L3.68164 0.5Z" fill="%23F8FAFC"/></svg>');
+            transform: rotate(180deg);
+        }
+
+        th.views-col.sorted-desc::before,
+        th.date-col.sorted-desc::before {
+            background-image: url('data:image/svg+xml;utf8,<svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.18164 0.5C4.18164 0.223858 3.95778 0 3.68164 0C3.4055 0 3.18164 0.223858 3.18164 0.5H3.68164L4.18164 0.5ZM3.32809 10.8536C3.52335 11.0488 3.83993 11.0488 4.03519 10.8536L7.21717 7.67157C7.41244 7.47631 7.41244 7.15973 7.21717 6.96447C7.02191 6.7692 6.70533 6.7692 6.51007 6.96447L3.68164 9.79289L0.853214 6.96447C0.657951 6.7692 0.341369 6.7692 0.146107 6.96447C-0.0491554 7.15973 -0.0491554 7.47631 0.146107 7.67157L3.32809 10.8536ZM3.68164 0.5H3.18164L3.18164 10.5H3.68164H4.18164L4.18164 0.5L3.68164 0.5Z" fill="%23F8FAFC"/></svg>');
         }
 
         td {
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid var(--border);
+            padding: 8px 16px;
+            border-bottom: 1px solid #252525;
             vertical-align: middle;
             height: 40px;
+            font-size: 15px;
+            background: #191919;
         }
 
         tbody tr {
             height: 40px;
+            background: #191919;
             transition: background 0.2s ease;
         }
 
         tbody tr:hover {
+            background: #222222 !important;
+        }
+
+        tbody tr:hover td {
             background: #222222;
         }
 
         .author-cell {
             font-weight: 600;
             color: #F8FAFC;
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            width: auto;
         }
 
         .url-cell a {
@@ -297,7 +433,7 @@
             white-space: nowrap;
             font-family: 'Space Mono', 'Monaco', monospace;
             text-align: right;
-            padding-right: 1rem;
+            width: 250px;
         }
 
         .views-cell.high-views {
@@ -311,25 +447,75 @@
         .date-cell {
             color: var(--text-dim);
             white-space: nowrap;
-            font-size: 0.9rem;
+            font-size: 15px;
+            text-align: right;
+            width: 250px;
         }
 
         .tags-cell {
-            max-width: 300px;
+            width: 250px;
             line-height: 1.5;
+            text-align: right;
+            padding-right: 16px;
         }
 
         .tag {
             display: inline-block;
             padding: 0.25rem 0.75rem;
-            background: rgba(88, 166, 255, 0.15);
-            color: var(--primary);
-            border: 1px solid rgba(88, 166, 255, 0.3);
             border-radius: 12px;
             font-size: 0.85rem;
             font-weight: 500;
-            margin-right: 0.5rem;
+            margin: 0;
             white-space: nowrap;
+            border: 1px solid;
+        }
+
+        .tag-yoga {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+            border-color: rgba(88, 166, 255, 0.3);
+        }
+
+        .tag-gym {
+            background: rgba(248, 81, 73, 0.15);
+            color: #f85149;
+            border-color: rgba(248, 81, 73, 0.3);
+        }
+
+        .tag-life {
+            background: rgba(163, 113, 247, 0.15);
+            color: #a371f7;
+            border-color: rgba(163, 113, 247, 0.3);
+        }
+
+        .tag-talking {
+            background: rgba(185, 125, 0, 0.15);
+            color: #d89614;
+            border-color: rgba(185, 125, 0, 0.3);
+        }
+
+        .tag-food {
+            background: rgba(0, 156, 18, 0.15);
+            color: #009c12;
+            border-color: rgba(0, 156, 18, 0.3);
+        }
+
+        .tag-skin {
+            background: rgba(255, 105, 180, 0.15);
+            color: #ff69b4;
+            border-color: rgba(255, 105, 180, 0.3);
+        }
+
+        .tag-mommy {
+            background: rgba(255, 138, 101, 0.15);
+            color: #ff8a65;
+            border-color: rgba(255, 138, 101, 0.3);
+        }
+
+        .tag-massage {
+            background: rgba(0, 168, 150, 0.15);
+            color: #00a896;
+            border-color: rgba(0, 168, 150, 0.3);
         }
 
         .no-tags {
@@ -395,6 +581,10 @@
             margin-bottom: 0.5rem;
             border: 1px solid var(--border);
             transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: inherit;
         }
 
         .reel-card:active {
@@ -449,37 +639,17 @@
         }
 
         .reel-tags {
-            margin: 0.5rem 0;
+            margin: 0;
             display: flex;
-            gap: 0.5rem;
+            gap: 4px;
             flex-wrap: wrap;
-        }
-
-        .reel-meta {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
         }
 
         .reel-date {
             color: var(--text-dim);
             font-size: 0.8rem;
-        }
-
-        .reel-link {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.8rem;
-            padding: 0;
-            height: 21px;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        @media (hover: hover) {
-            .reel-link:hover {
-                text-decoration: underline;
-            }
+            margin-left: auto;
         }
 
         .reel-caption {
@@ -492,11 +662,15 @@
         }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.1rem;
+            .header-inner {
+                padding: 0 1rem;
             }
 
-            .back-btn {
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .nav-link {
                 font-size: 0.85rem;
             }
 
@@ -567,8 +741,14 @@
 </head>
 <body>
     <header class="header">
-        <a href="index.html" class="back-btn">← Главная</a>
-        <h1>🎬 База Reels 50K+ за 180 дней</h1>
+        <div class="header-inner">
+            <nav class="nav-menu">
+                <a href="reels.html" class="nav-link active">Reels Base</a>
+                <a href="audience.html" class="nav-link">ЦА</a>
+                <a href="smm.html" class="nav-link">SMM Base</a>
+                <a href="analysis.html" class="nav-link">Summary</a>
+            </nav>
+        </div>
     </header>
 
     <div class="container">
@@ -588,7 +768,24 @@
             </div>
         </div>
 
-        <div class="table-container">
+        <div class="table-section">
+            <div class="table-header">
+                <h2 class="table-title">Reels Base</h2>
+                <div class="tag-filters" id="tagFilters">
+                    <span class="filter-tag sort-tag" data-sort="views">Просмотры</span>
+                    <span class="filter-tag sort-tag" data-sort="date">Дата</span>
+                    <span class="filter-tag tag-yoga" data-tag="yoga">yoga</span>
+                    <span class="filter-tag tag-gym" data-tag="gym">gym</span>
+                    <span class="filter-tag tag-life" data-tag="life">life</span>
+                    <span class="filter-tag tag-talking" data-tag="talking">talking</span>
+                    <span class="filter-tag tag-food" data-tag="food">food</span>
+                    <span class="filter-tag tag-skin" data-tag="skin">skin</span>
+                    <span class="filter-tag tag-mommy" data-tag="mommy">mommy</span>
+                    <span class="filter-tag tag-massage" data-tag="massage">massage</span>
+                </div>
+            </div>
+
+            <div class="table-container">
             <div class="loading" id="loadingMessage">Загрузка данных...</div>
             <div class="table-wrapper">
                 <table id="reelsTable" style="display: none;">
@@ -596,10 +793,9 @@
                         <tr>
                             <th class="num-col">№</th>
                             <th class="sortable author-col" data-column="author">Автор</th>
-                            <th>URL</th>
-                            <th class="sortable" data-column="views">Просмотры</th>
-                            <th class="sortable" data-column="date">Дата</th>
-                            <th>Теги</th>
+                            <th class="sortable views-col" data-column="views">Просмотры</th>
+                            <th class="tags-col">Теги</th>
+                            <th class="sortable date-col" data-column="date">Дата</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -611,6 +807,7 @@
             <div class="no-results" id="noResults" style="display: none;">
                 Ничего не найдено
             </div>
+        </div>
         </div>
 
         <div class="pagination" id="pagination" style="display: none;">
@@ -625,6 +822,7 @@
         let originalData = [];
         let filteredData = [];
         let currentSort = { column: null, direction: 'asc' };
+        let activeTagFilters = new Set(); // Empty by default - show all
 
         // Load JSON data
         async function loadData() {
@@ -632,12 +830,11 @@
                 const response = await fetch('filtered_50k_views.json');
                 reelsData = await response.json();
                 originalData = [...reelsData]; // Save original order
-                filteredData = [...reelsData];
 
                 document.getElementById('loadingMessage').style.display = 'none';
                 document.getElementById('reelsTable').style.display = 'table';
 
-                renderTable();
+                applyFilters();
             } catch (error) {
                 document.getElementById('loadingMessage').innerHTML =
                     '❌ Ошибка загрузки данных: ' + error.message;
@@ -680,7 +877,7 @@
             tbody.innerHTML = filteredData.map((item, index) => {
                 const globalIndex = index + 1;
                 const tagsHtml = item.tags && item.tags.length > 0
-                    ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')
+                    ? item.tags.map(tag => `<span class="tag tag-${tag}">${tag}</span>`).join(' ')
                     : '<span class="no-tags">—</span>';
 
                 // Determine views class based on value
@@ -692,15 +889,12 @@
                 }
 
                 return `
-                <tr>
+                <tr onclick="window.open('${item.url}', '_blank')" style="cursor: pointer;">
                     <td class="num-cell">${globalIndex}</td>
                     <td class="author-cell">${item.author}</td>
-                    <td class="url-cell">
-                        <a href="${item.url}" target="_blank">Открыть ↗</a>
-                    </td>
                     <td class="${viewsClass}">${formatNumber(item.views)}</td>
-                    <td class="date-cell">${formatDate(item.date)}</td>
                     <td class="tags-cell">${tagsHtml}</td>
+                    <td class="date-cell">${formatDate(item.date)}</td>
                 </tr>
                 `;
             }).join('');
@@ -709,7 +903,7 @@
             mobileCards.innerHTML = filteredData.map((item, index) => {
                 const globalIndex = index + 1;
                 const tagsHtml = item.tags && item.tags.length > 0
-                    ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')
+                    ? item.tags.map(tag => `<span class="tag tag-${tag}">${tag}</span>`).join(' ')
                     : '<span class="no-tags">—</span>';
 
                 // Determine views class based on value
@@ -721,17 +915,16 @@
                 }
 
                 return `
-                <div class="reel-card">
+                <a href="${item.url}" target="_blank" class="reel-card">
                     <div class="reel-card-header">
                         <div class="reel-author"><span class="reel-num">${globalIndex}</span> ${item.author}</div>
                         <div class="${viewsClass}">${formatNumber(item.views)}</div>
                     </div>
-                    <div class="reel-tags">${tagsHtml}</div>
-                    <div class="reel-meta">
+                    <div class="reel-tags">
+                        ${tagsHtml}
                         <div class="reel-date">${formatDate(item.date)}</div>
-                        <a href="${item.url}" target="_blank" class="reel-link">Открыть видео ↗</a>
                     </div>
-                </div>
+                </a>
                 `;
             }).join('');
         }
@@ -739,76 +932,46 @@
         // Sort table
         function sortTable(column) {
             // Determine next sort state
-            if (currentSort.column === column) {
-                if (currentSort.direction === 'asc') {
-                    currentSort.direction = 'desc';
-                } else if (currentSort.direction === 'desc') {
-                    // Third click - reset to original order
-                    currentSort.column = null;
-                    currentSort.direction = 'asc';
+            if (currentSort.column === column && currentSort.direction === 'desc') {
+                // Second click - reset to original order
+                currentSort.column = null;
+                currentSort.direction = null;
 
-                    // Restore original order
-                    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-                    if (searchTerm) {
-                        // If there's a search, filter from original data
-                        filteredData = originalData.filter(item => {
-                            return item.author.toLowerCase().includes(searchTerm) ||
-                                   (item.caption && item.caption.toLowerCase().includes(searchTerm));
-                        });
-                    } else {
-                        // No search, restore full original data
-                        filteredData = [...originalData];
-                    }
+                // Restore original order with filters applied
+                applyFilters();
 
-                    // Remove all sort indicators
-                    document.querySelectorAll('th.sortable').forEach(th => {
-                        th.classList.remove('sorted-asc', 'sorted-desc');
-                    });
-                    document.querySelectorAll('.sort-btn').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
+                // Remove all sort indicators
+                document.querySelectorAll('th.sortable').forEach(th => {
+                    th.classList.remove('sorted-asc', 'sorted-desc');
+                });
+                document.querySelectorAll('.sort-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
 
-                    renderTable();
-                    return;
-                }
+                return;
             } else {
+                // First click - sort descending
                 currentSort.column = column;
-                currentSort.direction = 'asc';
+                currentSort.direction = 'desc';
             }
 
-            // Perform sort
+            // Perform sort (descending only)
             filteredData.sort((a, b) => {
                 let aVal, bVal;
 
                 if (column === 'author') {
                     aVal = a.author.toLowerCase();
                     bVal = b.author.toLowerCase();
-
-                    if (currentSort.direction === 'asc') {
-                        return aVal > bVal ? 1 : -1;
-                    } else {
-                        return aVal < bVal ? 1 : -1;
-                    }
+                    return aVal < bVal ? 1 : -1;
                 } else if (column === 'views') {
                     aVal = a.views;
                     bVal = b.views;
-
-                    if (currentSort.direction === 'asc') {
-                        return aVal - bVal;
-                    } else {
-                        return bVal - aVal;
-                    }
+                    return bVal - aVal;
                 } else if (column === 'date') {
+                    // Sort from new to old (bigger timestamp first)
                     aVal = new Date(a.date).getTime();
                     bVal = new Date(b.date).getTime();
-
-                    if (currentSort.direction === 'asc') {
-                        // asc = от старых к новым (меньший timestamp первый)
-                        return aVal - bVal;
-                    } else {
-                        // desc = от новых к старым (больший timestamp первый)
-                        return bVal - aVal;
-                    }
+                    return bVal - aVal;
                 }
             });
 
@@ -816,7 +979,7 @@
             document.querySelectorAll('th.sortable').forEach(th => {
                 th.classList.remove('sorted-asc', 'sorted-desc');
                 if (th.dataset.column === column) {
-                    th.classList.add(currentSort.direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+                    th.classList.add('sorted-desc');
                 }
             });
 
@@ -856,6 +1019,37 @@
         }
 
         // Initialize event listeners
+        // Toggle tag filter
+        function toggleTagFilter(tag) {
+            if (activeTagFilters.has(tag)) {
+                activeTagFilters.delete(tag);
+            } else {
+                activeTagFilters.add(tag);
+            }
+            applyFilters();
+        }
+
+        // Apply tag filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredData = originalData.filter(item => {
+                // If no tags selected - show all
+                // If tags selected - show only items with selected tags
+                const hasActiveTag = activeTagFilters.size === 0 ||
+                    (item.tags && item.tags.some(tag => activeTagFilters.has(tag)));
+
+                // Apply search filter if exists
+                const matchesSearch = !searchTerm ||
+                    item.author.toLowerCase().includes(searchTerm) ||
+                    (item.caption && item.caption.toLowerCase().includes(searchTerm));
+
+                return hasActiveTag && matchesSearch;
+            });
+
+            renderTable();
+        }
+
         function initEventListeners() {
             // Sort headers
             document.querySelectorAll('th.sortable').forEach(th => {
@@ -869,7 +1063,39 @@
 
             // Search
             document.getElementById('searchInput').addEventListener('input', (e) => {
-                filterData(e.target.value);
+                applyFilters();
+            });
+
+            // Tag filters
+            document.querySelectorAll('.filter-tag:not(.sort-tag)').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    tag.classList.toggle('active');
+                    toggleTagFilter(tag.dataset.tag);
+                });
+            });
+
+            // Sort tags (mobile)
+            document.querySelectorAll('.sort-tag').forEach(sortTag => {
+                sortTag.addEventListener('click', () => {
+                    const sortColumn = sortTag.dataset.sort;
+
+                    // Check if clicking the same active tag
+                    if (sortTag.classList.contains('active')) {
+                        // Reset sort to default
+                        sortTag.classList.remove('active');
+                        currentSort = { column: null, direction: null };
+
+                        // Reset to original filtered data
+                        applyFilters();
+                    } else {
+                        // Remove active from all sort tags
+                        document.querySelectorAll('.sort-tag').forEach(t => t.classList.remove('active'));
+                        // Add active to clicked tag
+                        sortTag.classList.add('active');
+                        // Trigger sort
+                        sortTable(sortColumn);
+                    }
+                });
             });
         }
 
