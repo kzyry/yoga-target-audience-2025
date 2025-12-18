@@ -294,14 +294,26 @@
             font-size: 0.9rem;
         }
 
-        .caption-cell {
-            max-width: 400px;
+        .tags-cell {
+            max-width: 300px;
             line-height: 1.5;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .no-tags {
             color: var(--text-dim);
             font-size: 0.9rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .no-results {
@@ -401,6 +413,13 @@
             color: var(--success);
             white-space: nowrap;
             font-size: 0.9rem;
+        }
+
+        .reel-tags {
+            margin: 0.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .reel-meta {
@@ -547,7 +566,7 @@
                             <th>URL</th>
                             <th class="sortable" data-column="views">Просмотры</th>
                             <th class="sortable" data-column="date">Дата</th>
-                            <th>Описание</th>
+                            <th>Теги</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -627,7 +646,9 @@
             // Render desktop table - all records
             tbody.innerHTML = filteredData.map((item, index) => {
                 const globalIndex = index + 1;
-                const firstLine = getFirstLine(item.caption);
+                const tagsHtml = item.tags && item.tags.length > 0
+                    ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')
+                    : '<span class="no-tags">—</span>';
                 return `
                 <tr>
                     <td class="num-cell">${globalIndex}</td>
@@ -637,7 +658,7 @@
                     </td>
                     <td class="views-cell">${formatNumber(item.views)}</td>
                     <td class="date-cell">${formatDate(item.date)}</td>
-                    <td class="caption-cell">${firstLine}</td>
+                    <td class="tags-cell">${tagsHtml}</td>
                 </tr>
                 `;
             }).join('');
@@ -645,12 +666,16 @@
             // Render mobile cards - all records
             mobileCards.innerHTML = filteredData.map((item, index) => {
                 const globalIndex = index + 1;
+                const tagsHtml = item.tags && item.tags.length > 0
+                    ? item.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')
+                    : '<span class="no-tags">—</span>';
                 return `
                 <div class="reel-card">
                     <div class="reel-card-header">
                         <div class="reel-author"><span class="reel-num">${globalIndex}</span> ${item.author}</div>
                         <div class="reel-views">${formatNumber(item.views)}</div>
                     </div>
+                    <div class="reel-tags">${tagsHtml}</div>
                     <div class="reel-meta">
                         <div class="reel-date">${formatDate(item.date)}</div>
                         <a href="${item.url}" target="_blank" class="reel-link">Открыть видео ↗</a>
