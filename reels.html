@@ -161,8 +161,26 @@
             z-index: 10;
         }
 
+        th.num-col {
+            width: 60px;
+            text-align: center;
+            cursor: default;
+        }
+
+        th.num-col:hover {
+            background: var(--light);
+        }
+
         th:hover {
             background: var(--lighter);
+        }
+
+        td.num-cell {
+            text-align: center;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: 60px;
         }
 
         th.sortable::after {
@@ -316,6 +334,7 @@
             font-weight: 700;
             color: var(--primary);
             font-size: 1.1rem;
+            word-break: break-word;
         }
 
         .reel-views {
@@ -457,6 +476,7 @@
             <table id="reelsTable" style="display: none;">
                 <thead>
                     <tr>
+                        <th class="num-col">№</th>
                         <th class="sortable" data-column="author">Автор</th>
                         <th>URL</th>
                         <th class="sortable" data-column="views">Просмотры</th>
@@ -545,8 +565,11 @@
             document.getElementById('pagination').style.display = 'flex';
 
             // Render desktop table
-            tbody.innerHTML = pageData.map(item => `
+            tbody.innerHTML = pageData.map((item, index) => {
+                const globalIndex = startIndex + index + 1;
+                return `
                 <tr>
+                    <td class="num-cell">${globalIndex}</td>
                     <td class="author-cell">${item.author}</td>
                     <td class="url-cell">
                         <a href="${item.url}" target="_blank">Открыть ↗</a>
@@ -555,13 +578,16 @@
                     <td class="date-cell">${formatDate(item.date)}</td>
                     <td class="caption-cell">${item.caption || ''}</td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
 
             // Render mobile cards
-            mobileCards.innerHTML = pageData.map(item => `
+            mobileCards.innerHTML = pageData.map((item, index) => {
+                const globalIndex = startIndex + index + 1;
+                return `
                 <div class="reel-card">
                     <div class="reel-card-header">
-                        <div class="reel-author">${item.author}</div>
+                        <div class="reel-author">#${globalIndex} · ${item.author}</div>
                         <div class="reel-views">👁 ${formatNumber(item.views)}</div>
                     </div>
                     <div class="reel-meta">
@@ -570,7 +596,8 @@
                     </div>
                     ${item.caption ? `<div class="reel-caption">${item.caption}</div>` : ''}
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
             updatePagination();
         }
