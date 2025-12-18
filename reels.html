@@ -558,6 +558,7 @@
 
     <script>
         let reelsData = [];
+        let originalData = [];
         let filteredData = [];
         let currentSort = { column: null, direction: 'asc' };
         let currentPage = 1;
@@ -568,6 +569,7 @@
             try {
                 const response = await fetch('filtered_50k_views.json');
                 reelsData = await response.json();
+                originalData = [...reelsData]; // Save original order
                 filteredData = [...reelsData];
 
                 document.getElementById('loadingMessage').style.display = 'none';
@@ -668,13 +670,46 @@
 
         // Sort table
         function sortTable(column) {
+            // Determine next sort state
             if (currentSort.column === column) {
-                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                if (currentSort.direction === 'asc') {
+                    currentSort.direction = 'desc';
+                } else if (currentSort.direction === 'desc') {
+                    // Third click - reset to original order
+                    currentSort.column = null;
+                    currentSort.direction = 'asc';
+
+                    // Restore original order
+                    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                    if (searchTerm) {
+                        // If there's a search, filter from original data
+                        filteredData = originalData.filter(item => {
+                            return item.author.toLowerCase().includes(searchTerm) ||
+                                   (item.caption && item.caption.toLowerCase().includes(searchTerm));
+                        });
+                    } else {
+                        // No search, restore full original data
+                        filteredData = [...originalData];
+                    }
+
+                    // Remove all sort indicators
+                    document.querySelectorAll('th.sortable').forEach(th => {
+                        th.classList.remove('sorted-asc', 'sorted-desc');
+                    });
+                    document.querySelectorAll('.sort-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+
+                    currentPage = 1;
+                    renderTable();
+                    return;
+                }
             } else {
                 currentSort.column = column;
                 currentSort.direction = 'asc';
             }
 
+            // Perform sort
             filteredData.sort((a, b) => {
                 let aVal, bVal;
 
@@ -720,9 +755,21 @@
         function filterData(searchTerm) {
             const term = searchTerm.toLowerCase();
 
-            filteredData = reelsData.filter(item => {
+            filteredData = originalData.filter(item => {
                 return item.author.toLowerCase().includes(term) ||
                        (item.caption && item.caption.toLowerCase().includes(term));
+            });
+
+            // Reset sort when searching
+            currentSort.column = null;
+            currentSort.direction = 'asc';
+
+            // Remove sort indicators
+            document.querySelectorAll('th.sortable').forEach(th => {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+            });
+            document.querySelectorAll('.sort-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
 
             currentPage = 1;
