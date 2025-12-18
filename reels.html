@@ -544,6 +544,12 @@
             return date.toLocaleDateString('ru-RU');
         }
 
+        // Get first line of caption
+        function getFirstLine(text) {
+            if (!text) return '';
+            return text.split('\n')[0];
+        }
+
         // Render table and mobile cards
         function renderTable() {
             const tbody = document.getElementById('tableBody');
@@ -567,6 +573,7 @@
             // Render desktop table
             tbody.innerHTML = pageData.map((item, index) => {
                 const globalIndex = startIndex + index + 1;
+                const firstLine = getFirstLine(item.caption);
                 return `
                 <tr>
                     <td class="num-cell">${globalIndex}</td>
@@ -576,7 +583,7 @@
                     </td>
                     <td class="views-cell">${formatNumber(item.views)}</td>
                     <td class="date-cell">${formatDate(item.date)}</td>
-                    <td class="caption-cell">${item.caption || ''}</td>
+                    <td class="caption-cell">${firstLine}</td>
                 </tr>
                 `;
             }).join('');
@@ -594,7 +601,6 @@
                         <div class="reel-date">📅 ${formatDate(item.date)}</div>
                         <a href="${item.url}" target="_blank" class="reel-link">Открыть видео ↗</a>
                     </div>
-                    ${item.caption ? `<div class="reel-caption">${item.caption}</div>` : ''}
                 </div>
                 `;
             }).join('');
