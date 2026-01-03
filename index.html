@@ -455,15 +455,6 @@
             border-color: var(--primary);
         }
 
-        .author-checkbox:checked::after {
-            content: '✓';
-            position: absolute;
-            top: -1px;
-            left: 2px;
-            color: #191919;
-            font-size: 12px;
-            font-weight: bold;
-        }
 
         .author-avatar {
             width: 20px;
@@ -933,14 +924,15 @@
             }
         }
 
-        // Обработка изменения чекбокса
-        function toggleAuthorCheck(author, isChecked) {
+        // Обработка изменения чекбокса - ВАЖНО: только добавление, удаление только при явном снятии галочки
+        function toggleAuthorCheck(reelUrl, isChecked) {
             if (isChecked) {
-                checkedAuthors.add(author);
+                checkedAuthors.add(reelUrl);
             } else {
-                checkedAuthors.delete(author);
+                checkedAuthors.delete(reelUrl);
             }
             saveCheckedAuthors();
+            console.log('Saved checkboxes:', checkedAuthors.size, 'total items');
         }
 
         // Получение пути к аватару
