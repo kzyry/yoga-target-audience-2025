@@ -424,9 +424,11 @@
             align-items: center;
             gap: 6px;
             height: 41px !important;
+            min-height: 41px !important;
             max-height: 41px !important;
             overflow: hidden;
-            line-height: normal;
+            line-height: 41px;
+            padding: 0 16px !important;
         }
 
         .author-checkbox {
@@ -474,6 +476,10 @@
 
         .author-name {
             flex: 1;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .url-cell a {
