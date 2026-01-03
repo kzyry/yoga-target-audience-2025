@@ -901,7 +901,8 @@
 
         // Получение пути к аватару
         function getAvatarPath(author) {
-            return `img/${author}.jpg`;
+            // Пробуем PNG, так как большинство изображений в этом формате
+            return `img/${author}.png`;
         }
 
         // Load JSON data
